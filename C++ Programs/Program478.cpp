@@ -1,0 +1,351 @@
+// Generic Singly Linear Linkedlist
+
+#include<iostream>
+using namespace std;
+
+template <class T>
+struct node
+{
+    T data;
+    struct node *next;
+};  
+
+
+template <class T>
+class SinglyLL
+{
+    public:
+        struct node<T> * First;// it contains address of first node
+        int iCount; // for counting node elements
+
+        SinglyLL();// constructor declaration
+
+        void Display();
+        int Count();
+
+        void InsertFirst(T No);
+        void InsertLast(T No);
+        void InsertAtPos(T No, int iPos);
+
+        void DeleteFirst();
+        void DeleteLast();
+        void DeleteAtPos(int iPos);
+};
+
+template <class T>
+SinglyLL<T>::SinglyLL() // constructor definition
+{
+    cout<<"Inside constructor."<<endl;
+    First=NULL;
+    iCount=0;
+}
+
+template <class T>
+void SinglyLL<T>::Display()
+{   
+    struct node<T> * temp=First;
+    while(temp != NULL)
+    {
+        cout<<"|"<<temp->data<<"|->";
+        temp=temp->next;
+    }
+    cout<<"NULL"<<endl;
+}
+
+template <class T>
+int SinglyLL<T>::Count()
+{
+    return iCount;
+}
+
+template <class T>
+void SinglyLL<T>::InsertFirst(T No)
+{
+    struct node<T> * newn=NULL;
+
+    newn=new struct node<T>;
+
+    newn->data=No;
+    newn->next=NULL;
+
+    if(First == NULL) // if(iCount == 0){}
+    {
+        First=newn;
+    }
+    else
+    {
+        newn->next=First;
+        First=newn;
+    }
+    iCount++;
+}
+
+template <class T>
+void SinglyLL<T>::InsertLast(T No)
+{
+    struct node<T> * newn=NULL;
+    struct node<T> *  temp=NULL;
+
+    newn=new struct node<T>;
+
+    newn->data=No;
+    newn->next=NULL;
+
+    if(First == NULL) // if(iCount == 0){}
+    {
+        First=newn;
+    }
+    else
+    {
+        temp=First;
+
+        while(temp->next !=NULL)
+        {
+            temp=temp->next;
+        }
+        temp->next=newn;
+    }
+    iCount++;
+}
+
+template <class T>
+void SinglyLL<T>::InsertAtPos(T No, int iPos)
+{
+    struct node<T> *  newn=NULL;
+    struct node<T> *  temp=NULL;
+    int i=0;
+
+    if((iPos<1)||(iPos >iCount+1))
+    {
+        cout<<"Invalid position"<<endl;
+        return;
+    }
+    if(iPos ==1 )
+    {
+        InsertFirst(No);
+    }
+    else if(iPos==iCount+1)
+    {
+        InsertLast(No);
+    }
+    else
+    {
+        temp=First;
+        newn=new struct node<T>;
+
+        newn->data=No;
+        newn->next=NULL;
+
+        for(i=1;i<iPos-1;i++)
+        {
+            temp=temp->next;
+        }
+        newn->next=temp->next;
+        temp->next=newn;
+        iCount++;
+    }
+}
+
+template <class T>
+void SinglyLL<T>::DeleteFirst()
+{
+    struct node<T> * temp=First;
+
+    if(First==NULL)
+    {
+        cout<<"LL is empty.\n";
+        return;
+    }
+    else if(First->next == NULL)
+    {
+        delete First;
+        First=NULL;
+    }
+    else
+    {
+        First=First->next;
+        delete temp;
+    }
+    iCount--;
+}
+
+template <class T>
+void SinglyLL<T>::DeleteLast()
+{
+    struct node<T> * temp=NULL;
+
+    if(First == NULL) // if(iCount == 0){}
+    {
+        return;
+    }
+    else if(First->next == NULL)
+    {
+        delete First;
+        First=NULL;
+    }
+    else
+    {
+        temp=First;
+
+        while(temp->next->next !=NULL)
+        {
+            temp=temp->next;
+        }
+        delete(temp->next); 
+        temp->next=NULL; 
+    }
+    iCount--;
+}
+
+template <class T>
+void SinglyLL<T>::DeleteAtPos(int iPos)
+{
+    struct node<T> * temp1=NULL;
+    struct node<T> * temp2=NULL;
+    int i=0;
+
+    if((iPos<1)||(iPos >iCount))
+    {
+        cout<<"Invalid position"<<endl;
+        return;
+    }
+    if(iPos ==1 )
+    {
+        DeleteFirst();
+    }
+    else if(iPos=iCount)
+    {
+        DeleteLast();
+    }
+    else
+    {
+        temp1=First;
+
+        for(i=1;i<iPos-1;i++)
+        {
+            temp1=temp1->next;
+        }
+        temp2=temp1->next;
+
+        temp1->next=temp2->next;
+        delete temp2;
+
+        iCount--;
+    }   
+}
+
+int main()
+{
+    //LL of integer
+
+    cout<<"-------------lLinkedlist of Integers-----------------"<<endl;
+    SinglyLL <int>*iobj=new SinglyLL<int>();
+    int iRet=0;
+
+    iobj->InsertFirst(51);
+    iobj->InsertFirst(21);
+    iobj->InsertFirst(11);
+    iobj->InsertLast(101);
+    iobj->InsertLast(111);
+    iobj->InsertLast(121);
+    iobj->Display();
+
+    iRet=iobj->Count();
+    cout<<"Number of elements are: "<<iRet<<endl;
+
+    iobj->InsertAtPos(105,5);
+    iobj->Display();
+
+    iRet=iobj->Count();
+    cout<<"Number of elements are: "<<iRet<<endl;
+
+    iobj->DeleteAtPos(5);
+    iobj->Display();
+
+    iRet=iobj->Count();
+    cout<<"Number of elements are: "<<iRet<<endl;
+
+
+    // LL of character
+    cout<<"-------------lLinkedlist of characters-----------------"<<endl;
+    SinglyLL <char>* cobj=new SinglyLL<char>();
+
+    cobj->InsertFirst('c');
+    cobj->InsertFirst('b');
+    cobj->InsertFirst('a');
+    cobj->InsertLast('d');
+    cobj->InsertLast('e');
+    cobj->InsertLast('f');
+    cobj->Display();
+
+    iRet=cobj->Count();
+    cout<<"Number of elements are: "<<iRet<<endl;
+
+    cobj->InsertAtPos('z',5);
+    cobj->Display();
+
+    iRet=cobj->Count();
+    cout<<"Number of elements are: "<<iRet<<endl;
+
+    cobj->DeleteAtPos(5);
+    cobj->Display();
+
+
+    // LL of float
+
+    cout<<"-------------lLinkedlist of Float-----------------"<<endl;
+    SinglyLL <float>* fobj=new SinglyLL<float>();
+
+    fobj->InsertFirst(10.20f);
+    fobj->InsertFirst(20.20f);
+    fobj->InsertFirst(30.20f);
+    fobj->InsertLast(40.20f);
+    fobj->InsertLast(50.20f);
+    fobj->InsertLast(60.20f);
+    fobj->Display();
+
+    iRet=fobj->Count();
+    cout<<"Number of elements are: "<<iRet<<endl;
+
+    fobj->InsertAtPos(70.20f,5);
+    fobj->Display();
+
+    iRet=fobj->Count();
+    cout<<"Number of elements are: "<<iRet<<endl;
+
+    fobj->DeleteAtPos(5);
+    fobj->Display();
+
+    iRet=fobj->Count();
+    cout<<"Number of elements are: "<<iRet<<endl;
+
+    // LL of double
+    cout<<"-------------lLinkedlist of Double-----------------"<<endl;
+    SinglyLL <double>* dobj=new SinglyLL<double>();
+
+    dobj->InsertFirst(10.2012);
+    dobj->InsertFirst(20.2012);
+    dobj->InsertFirst(30.2030);
+    dobj->InsertLast(40.2040);
+    dobj->InsertLast(50.2050);
+    dobj->InsertLast(60.2070);
+    dobj->Display();
+
+    iRet=dobj->Count();
+    cout<<"Number of elements are: "<<iRet<<endl;
+
+    dobj->InsertAtPos(70.20,5);
+    dobj->Display();
+
+    iRet=dobj->Count();
+    cout<<"Number of elements are: "<<iRet<<endl;
+
+    dobj->DeleteAtPos(5);
+    dobj->Display();
+
+    iRet=dobj->Count();
+    cout<<"Number of elements are: "<<iRet<<endl;
+
+
+    return 0;
+}
