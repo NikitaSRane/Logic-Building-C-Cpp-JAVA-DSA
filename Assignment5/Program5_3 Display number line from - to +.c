@@ -1,0 +1,38 @@
+// Write a program which accept number from user and print its numbers line
+
+// Time Complexity- O(2N)
+
+#include<stdio.h>
+
+////////////////////////////////////////////////////////////
+//
+// Function Name: Display
+// Description: Display number line from - to +.
+// Input: Integer
+// Output: -
+// Author: Nikita Sagar Rane
+// Date: 09/05/2024
+//
+///////////////////////////////////////////////////////////
+
+void Display(int iNo)
+{
+    int iCnt=0;
+
+    for(iCnt=-iNo;iCnt<=iNo;iCnt++)
+    {
+        printf("%d\t",iCnt);
+    }
+}
+
+int main()
+{
+    int iValue=0;
+
+    printf("Enter number: ");
+    scanf("%d",&iValue);
+
+    Display(iValue);
+
+    return 0;
+}
